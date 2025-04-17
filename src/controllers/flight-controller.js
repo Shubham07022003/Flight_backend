@@ -1,3 +1,4 @@
+const { FlightRepository } = require('../repositores');
 const{FlightService} = require ('../services');
 //const{StatusCodes}= require('http-status-codes');
 
@@ -34,9 +35,9 @@ async function createFlight (req ,res){
     }
 }
 
-async function getFlights (req,res){
+async function getAllFlights (req,res){
     try {
-        const flights = await FlightService.getFlights(req.query);
+        const flights = await FlightService.getAllFlights(req.query);
         SuccessResponse.data = flights;
         return res.json(SuccessResponse);
 
@@ -49,12 +50,58 @@ async function getFlights (req,res){
 
     }
 }
-//post: /airplanes/:id
+//get: /flight/:id
+async function getFlight (req,res){
+    try {
+        //console.log(req.body);
+        const flight = await FlightService.getFlight(req.params.id);
+        SuccessResponse.data = flight;
+        return res
+        .status(StatusCodes.OK)
+        .json(SuccessResponse)
+        
+
+       
+        
+    } catch (error) {
+        ErrorResponse.error = error;
+        return res
+        .status(error.statusCode)
+         .json(ErrorResponse);
+
+    }
+}
+async function updateSeats (req,res){
+    try {
+        console.log(req.body);
+        const response = await FlightService.updateSeats({
+            flightId: req.params.flightId ,
+            seats: req.body.seats,
+            dec: req.body.dec 
+        });
+        SuccessResponse.data = response;
+        return res
+        .status(StatusCodes.OK)
+        .json(SuccessResponse)
+        
+
+       
+        
+    } catch (error) {
+        ErrorResponse.error = error;
+        return res
+        .status(error.statusCode)
+         .json(ErrorResponse);
+
+    }
+}
+// async function destroyAirplane (req,res){
 
 module.exports ={
     createFlight,
-    getFlights,
-    // getAirplane,
+    getAllFlights,
+    getFlight,
+    updateSeats
     // destroyAirplane,
     // updateAirplane
 }

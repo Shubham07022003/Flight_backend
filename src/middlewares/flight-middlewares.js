@@ -71,7 +71,20 @@ function validateCreateRequest(req, res,next){
     }
     next();
 }
+function validateUpdateSeatsRequest(req, res,next){
+   
+    if(!req.body.seats){
+        ErrorResponse.message= 'something went wrrong while updating flight';
+       // new AppError(['Model number not found in oncoming request in the correct form'],StatusCodes.BAD_REQUEST )
+        ErrorResponse.error=  new AppError([' seats not found in oncoming request in the correct form'],StatusCodes.BAD_REQUEST ) ;
+        return res
+        .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+    }
+    next();
+}
 
 module.exports= {
-    validateCreateRequest
+    validateCreateRequest,
+    validateUpdateSeatsRequest
 }

@@ -9,9 +9,16 @@ router.post('/',
     FlightController.createFlight);
   // /api/v1/airplane GET  
 router.get('/',
-    FlightController.getFlights);
-//   // /api/v1/airplane/:id get
+    FlightController.getAllFlights);
+//   // /api/v1/plane/:id get
+router.get('/:id',
+  FlightController.getFlight);
 
+// /api/v1/flights/seats PATCH
+router.patch('/:flightId/seats',
+    FlightMiddlewares.validateUpdateSeatsRequest,
+    FlightController.updateSeats
+)
 // router.get('/:id',
 //     FlightController.getAirport);
 
