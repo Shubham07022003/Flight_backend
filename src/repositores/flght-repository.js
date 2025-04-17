@@ -5,6 +5,7 @@ const{Flight, Airplane ,Airport, City } = require('../models');
 const { StatusCodes } = require('http-status-codes');
 const AppError = require('../utils/errors/app.error');
 const db = require('../models');
+const{addRowLockOnFlights}= require('./queries')
 
 class FlightRepository extends Crudrepository {
     constructor(){
@@ -59,7 +60,7 @@ class FlightRepository extends Crudrepository {
         return response;
     }
   async updateRemainingSeats(flightId, seats, dec = true ){
-    await db. sequelize.query(`SELECT * from Flights where Flights.id = ${flightId} FOR UPDATE ;` );
+    await db. sequelize.query(addRowLockOnFlights(flightId));
     const flight = await Flight.findByPk(flightId);
     if(!flight) {
         throw new AppError('Flight not found', StatusCodes.NOT_FOUND);
